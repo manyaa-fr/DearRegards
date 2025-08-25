@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
+    container_name: mern-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app  # Bind mount for development, remove for production
+    environment:
+      # Use a dedicated network alias for the database service
+      - MONGODB_URI=mongodb://mongodb:27017/dearregards
+      - JWT_SECRET=your_jwt_secret_key
+      - EMAIL_USER=your_email_user
+      - EMAIL_PASS=your_email_pass
+    depends_on:
+      - mongodb
+    networks:
+      - mern-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    container_name: mern-frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app # Bind mount for development, remove for production
+    depends_on:
+      - backend
+    networks:
+      - mern-network
+
+  mongodb:
+    image: mongo:4.4
+    container_name: mern-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mern-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  mern-network:
+    driver: bridge
