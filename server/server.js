@@ -11,8 +11,8 @@ connectDB();
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost:5173', // For local development
-  'https://dear-regards-ku8pvu7jh-manyas-projects-0623e789.vercel.app/' // frontend's public URL on Render
+  'http://localhost:5173', 
+  'https://dear-regards.vercel.app'
 ];
 
 const corsOptions = {
