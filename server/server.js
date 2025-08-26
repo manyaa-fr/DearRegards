@@ -10,9 +10,27 @@ connectDB();
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173', // For local development
+  'https://dear-regards-ku8pvu7jh-manyas-projects-0623e789.vercel.app/' // frontend's public URL on Render
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
 // Middleware
 app.use(express.json());
-app.use(cors());
 
 // Basic health check route
 app.get('/', (req, res) => {
