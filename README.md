@@ -14,7 +14,7 @@ Dear Regards is an intelligent, full-stack application designed to help you tran
 And yes ofcourse the features are all working!!
 Check them out:
 #### Backend: https://zynk-d1b9.onrender.com/
-#### Frontend: dear-regards.vercel.app
+#### Frontend: https://dear-regards.vercel.app
 
 ### ⚙️ Deployment (Coming Soon)
 
