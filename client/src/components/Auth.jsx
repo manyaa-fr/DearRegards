@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 // import '../styles/Auth.css'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://dearregards.onrender.com/api';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
