@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import '../styles/ConversionTool.css'
+import { Mic, Mail, Home, BarChart3 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/ConversionTool.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,12 +13,13 @@ function ConversionTool() {
   const [error, setError] = useState(null);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
+  const navigate = useNavigate();
 
   // New state for user controls
   const [tone, setTone] = useState('Professional');
   const [wordLimit, setWordLimit] = useState(150);
 
- const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
     setConvertedEmail(null);
@@ -42,7 +43,7 @@ function ConversionTool() {
     }
   };
 
-const handleSendToGmail = () => {
+  const handleSendToGmail = () => {
     // Check for both convertedSubject and convertedEmail
     if (convertedEmail?.convertedSubject && convertedEmail?.convertedEmail) {
       const subject = encodeURIComponent(convertedEmail.convertedSubject);
@@ -89,6 +90,26 @@ const handleSendToGmail = () => {
 
   return (
     <div className="container">
+      {/* Navigation Header */}
+      <div className="navigation-header">
+        <div className="nav-buttons">
+          <button
+            className="nav-button back-button"
+            onClick={() => navigate('/')}
+          >
+            <Home size={16} />
+            Back to Home
+          </button>
+          <button
+            className="nav-button dashboard-button"
+            onClick={() => navigate('/dashboard')}
+          >
+            <BarChart3 size={16} />
+            Dashboard
+          </button>
+        </div>
+      </div>
+
       <div className="card">
         <h2>AI Email Tone Converter</h2>
         <p style={{ marginBottom: '1.5rem' }}>
@@ -152,7 +173,7 @@ const handleSendToGmail = () => {
                 fontSize: '1.5rem',
               }}
             >
-              <FontAwesomeIcon icon={faMicrophone} />
+              <Mic size={20} />
             </button>
           </div>
           <button type="submit" className="btn-primary" disabled={isLoading || !angryEmail.trim()}>
@@ -173,7 +194,7 @@ const handleSendToGmail = () => {
                 <strong>Tone Shift:</strong> {convertedEmail.toneChange}
               </p>
               <button onClick={handleSendToGmail} className="btn-primary" style={{ marginTop: '1rem' }}>
-                <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '0.5rem' }} /> Send to Gmail
+                <Mail size={16} style={{ marginRight: '0.5rem' }} /> Send to Gmail
               </button>
             </div>
           )}

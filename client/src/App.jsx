@@ -10,23 +10,6 @@ function App() {
   const { user, logout } = useContext(AuthContext);
 
   return (
-    <>
-      <header className="app-header">
-        <Link to="/" className="logo">DearRegards</Link>
-        <nav>
-          {!user ? (
-            <Link to="/auth" className="nav-link">Login / Register</Link>
-          ) : (
-            <>
-              <Link to="/app" className="nav-link">Convert</Link>
-              <Link to="/dashboard" className="nav-link">Dashboard</Link>
-              <button onClick={logout} className="btn-link">Logout</button>
-            </>
-          )}
-        </nav>
-      </header>
-
-      {/* <main style={{ flex: 1, display: 'flex' }}> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<Auth />} />
@@ -40,8 +23,6 @@ function App() {
           )}
           <Route path="*" element={<div className="container"><h2>404: Not Found</h2></div>} />
         </Routes>
-      {/* </main> */}
-    </>
   );
 }
 

@@ -13,7 +13,7 @@ Dear Regards is an intelligent, full-stack application designed to help you tran
 
 And yes ofcourse the features are all working!!
 Check them out:
-#### Backend: https://zynk-d1b9.onrender.com/
+#### Backend: https://dearregards.onrender.com
 #### Frontend: https://dear-regards.vercel.app
 
 ### ⚙️ Deployment (Coming Soon)

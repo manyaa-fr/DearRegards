@@ -1,17 +1,25 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Mail, Lock, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-// import '../styles/Auth.css'
+import '../styles/Auth.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://dearregards.onrender.com/api';
 
-function Auth() {
+const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ email: '', password: '', ageVerified: false, otp: '' });
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    ageVerified: false,
+    otp: ''
+  });
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [requiresVerification, setRequiresVerification] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -24,38 +32,38 @@ function Auth() {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    setIsLoading(true);
 
-    if (isLogin) {
-      try {
+    try {
+      if (isLogin) {
         const response = await axios.post(`${BACKEND_URL}/auth/login`, {
           email: formData.email,
-          password: formData.password,
+          password: formData.password
         });
         login(response.data.token, response.data.user);
         navigate('/app');
-      } catch (err) {
-        if (err.response?.status === 401) {
-          setRequiresVerification(true);
-          setMessage(err.response.data.error);
-        } else {
-          setError(err.response?.data?.error || 'An unexpected error occurred.');
+      } else {
+        if (!formData.ageVerified) {
+          setError('You must be 18 or older to register.');
+          return;
         }
-      }
-    } else { // Register
-      if (!formData.ageVerified) {
-        return setError('You must be 18 or older to register.');
-      }
-      try {
         await axios.post(`${BACKEND_URL}/auth/register`, {
           email: formData.email,
           password: formData.password,
-          ageVerified: formData.ageVerified,
+          ageVerified: formData.ageVerified
         });
         setRequiresVerification(true);
-        setMessage('Registration successful. Please check your email for an OTP.');
-      } catch (err) {
+        setMessage('Registration successful! Please check your email for an OTP.');
+      }
+    } catch (err) {
+      if (err.response?.status === 401 && isLogin) {
+        setRequiresVerification(true);
+        setMessage(err.response.data.error);
+      } else {
         setError(err.response?.data?.error || 'An unexpected error occurred.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,64 +71,182 @@ function Auth() {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    setIsLoading(true);
+
     try {
       const response = await axios.post(`${BACKEND_URL}/auth/verify-otp`, {
         email: formData.email,
-        otp: formData.otp,
+        otp: formData.otp
       });
       login(response.data.token, response.data.user);
       navigate('/app');
     } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred during verification.');
+      setError(err.response?.data?.error || 'Verification failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <div className="card" style={{ maxWidth: '450px', margin: '0 auto' }}>
-        <h2>{isLogin ? 'Login' : 'Register'}</h2>
-        {message && <div className="alert">{message}</div>}
-        {error && <div className="alert alert-error">{error}</div>}
+    <div className="auth-container">
+      <div className="auth-content">
+        <button className="auth-back-button" onClick={() => navigate('/')}>
+          <ArrowLeft size={16} />
+          Back to Home
+        </button>
 
-        {!requiresVerification ? (
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-logo"><span>DR</span></div>
+            <div>
+              <h1 className="auth-title gradient-text">
+                {requiresVerification 
+                  ? 'Verify Your Email'
+                  : isLogin 
+                    ? 'Welcome Back'
+                    : 'Create Account'
+                }
+              </h1>
+              <p className="auth-description">
+                {requiresVerification 
+                  ? 'Enter the OTP sent to your email'
+                  : isLogin 
+                    ? 'Sign in to your account'
+                    : 'Join thousands of users creating amazing experiences'
+                }
+              </p>
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-            </div>
-            {!isLogin && (
-              <div className="form-group">
-                <input type="checkbox" name="ageVerified" checked={formData.ageVerified} onChange={handleChange} />
-                <label htmlFor="ageVerified" className="checkbox-label">I am 18 or older</label>
+          </div>
+
+          <div className="auth-content-area">
+            {message && (
+              <div className="alert alert-success">
+                <CheckCircle size={16} />
+                <p className="alert-description">{message}</p>
               </div>
             )}
-            <button type="submit" className="btn-primary">
-              {isLogin ? 'Login' : 'Register'}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleOtpSubmit}>
-            <p style={{ marginBottom: '1rem' }}>Enter the OTP sent to your email to verify your account.</p>
-            <div className="form-group">
-              <label htmlFor="otp">OTP</label>
-              <input type="text" name="otp" value={formData.otp} onChange={handleChange} required />
-            </div>
-            <button type="submit" className="btn-primary">Verify Account</button>
-          </form>
-        )}
+            {error && (
+              <div className="alert alert-error">
+                <AlertCircle size={16} />
+                <p className="alert-description">{error}</p>
+              </div>
+            )}
 
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <a href="#" onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Create an account' : 'Already have an account?'}
-          </a>
-        </p>
+            {!requiresVerification ? (
+              <form onSubmit={handleSubmit} className="auth-form">
+                <div className="auth-field">
+                  <label htmlFor="email" className="form-label">Email Address</label>
+                  <div className="auth-input-container">
+                    <Mail className="auth-input-icon" />
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="auth-input"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="auth-field">
+                  <label htmlFor="password" className="form-label">Password</label>
+                  <div className="auth-input-container">
+                    <Lock className="auth-input-icon" />
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="auth-input"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {!isLogin && (
+                  <div className="auth-checkbox-container">
+                    <input
+                      id="ageVerified"
+                      name="ageVerified"
+                      type="checkbox"
+                      checked={formData.ageVerified}
+                      onChange={handleChange}
+                      className="auth-checkbox"
+                    />
+                    <label htmlFor="ageVerified" className="checkbox-label">
+                      I confirm that I am 18 years or older
+                    </label>
+                  </div>
+                )}
+
+                <button type="submit" className="auth-submit-button" disabled={isLoading}>
+                  {isLoading ? 'Please wait...' : isLogin ? 'Sign In' : 'Create Account'}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleOtpSubmit} className="auth-form">
+                <div className="auth-field">
+                  <label htmlFor="otp" className="form-label">Verification Code</label>
+                  <input
+                    id="otp"
+                    name="otp"
+                    type="text"
+                    placeholder="Enter 6-digit code"
+                    value={formData.otp}
+                    onChange={handleChange}
+                    className="auth-input auth-otp-input"
+                    maxLength={6}
+                    required
+                  />
+                  <p className="auth-otp-info">Code sent to {formData.email}</p>
+                </div>
+                <button type="submit" className="auth-submit-button" disabled={isLoading}>
+                  {isLoading ? 'Verifying...' : 'Verify Email'}
+                </button>
+                <button
+                  type="button"
+                  className="auth-back-to-login"
+                  onClick={() => setRequiresVerification(false)}
+                >
+                  Back to Login
+                </button>
+              </form>
+            )}
+          </div>
+
+          <div className="auth-footer">
+            <div className="auth-separator"></div>
+            <div className="auth-switch-text">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              <button
+                className="auth-switch-button"
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setRequiresVerification(false);
+                  setMessage(null);
+                  setError(null);
+                  setFormData({ email: '', password: '', ageVerified: false, otp: '' });
+                }}
+              >
+                {isLogin ? 'Sign up' : 'Sign in'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="auth-legal-text">
+          By continuing, you agree to our{' '}
+          <Link to="/terms" className="auth-legal-link">Terms of Service</Link> and{' '}
+          <Link to="/privacy" className="auth-legal-link">Privacy Policy</Link>.
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Auth;

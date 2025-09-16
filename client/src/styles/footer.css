@@ -1,0 +1,256 @@
+.footer {
+  background-color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 16px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Brand Section */
+.brand-section {
+  grid-column: span 1;
+}
+
+@media (min-width: 1024px) {
+  .brand-section {
+    grid-column: span 2;
+  }
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--gradient-primary);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-icon span {
+  color: var(--primary-foreground);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.brand-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.brand-description {
+  color: var(--muted-foreground);
+  margin-bottom: 32px;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+/* Newsletter */
+.newsletter {
+  margin-bottom: 16px;
+}
+
+.newsletter-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 16px;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .newsletter-form {
+    flex-direction: row;
+  }
+}
+
+
+.input-elegant {
+    width: 500%;
+    padding: 12px 16px;
+    border: 1px solid var(--input);
+    border-radius: 0.5rem;
+    background-color: var(--background);
+    color: var(--foreground);
+    transition: var(--transition-smooth);
+    font-size: 14px;
+}
+
+.newsletter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Footer Sections */
+.footer-section {
+  
+}
+
+.footer-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 24px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 16px;
+}
+
+.footer-link {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  group: true;
+}
+
+.footer-link:hover {
+  color: var(--foreground);
+}
+
+.footer-link .external-icon {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.footer-link:hover .external-icon {
+  opacity: 1;
+}
+
+/* Bottom Section */
+.footer-bottom {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-bottom-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom-content {
+    flex-direction: row;
+  }
+}
+
+/* Social Media */
+.social-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.social-label {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin-right: 8px;
+}
+
+.social-links {
+  display: flex;
+  gap: 16px;
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+.contact-link:hover {
+  color: var(--foreground);
+}
+
+/* Closing Statement */
+.closing-statement {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.closing-main {
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.closing-main .heart-icon {
+  color: var(--accent);
+}
+
+.closing-subtitle {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin-top: 8px;
+}
+
+/* Copyright */
+.copyright {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}

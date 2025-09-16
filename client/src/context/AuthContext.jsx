@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { redirectDocument } from 'react-router-dom';
-import LandingPage from '../components/LandingPage';
 
 const AuthContext = createContext();
 
@@ -30,7 +28,7 @@ const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/'; // Redirect to landing page
+    window.location.href = '/';
   };
 
   if (token) {
@@ -39,8 +37,10 @@ const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common['Authorization'];
   }
 
+  const isLoggedIn = !!token;
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

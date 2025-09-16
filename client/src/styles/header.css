@@ -1,0 +1,158 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--background);
+  backdrop-filter: blur(8px);
+  border-bottom: solid var(--border);
+  opacity: 0.95;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-primary);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon span {
+  color: var(--primary-foreground);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Desktop Navigation */
+.desktop-nav {
+  display: none;
+  align-items: center;
+  justify-self: center;
+  gap: 32px;
+}
+
+.btn-hero {
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+  }
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+@media (min-width: 768px) {
+  .cta-buttons {
+    display: flex;
+  }
+}
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+  display: block;
+  padding: 8px;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.mobile-menu-button:hover {
+  background-color: var(--muted);
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-button {
+    display: none;
+  }
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  margin-top: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 8px 0;
+}
+
+.mobile-cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+}
+
+.mobile-cta-buttons .btn-primary,
+.mobile-cta-buttons .btn-hero {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu {
+    display: none;
+  }
+}
+
+/* Tagline Bar */
+.tagline-bar {
+  background: var(--gradient-primary);
+  color: var(--primary-foreground);
+  padding: 5px;
+}
+
+.tagline-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.tagline-text {
+  font-size: 14px;
+  font-weight: 500;
+}
