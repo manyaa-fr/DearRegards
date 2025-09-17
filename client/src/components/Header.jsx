@@ -8,10 +8,11 @@ const Header = () => {
     const { isLoggedIn, logout } = useContext(AuthContext);
 
     const navigationLinks = [
-        { name: 'Home', href: '#' },
+        { name: 'Home', href: '/' },
         { name: 'Features', href: '/features' },
         { name: 'About Us', href: '/about-us' },
-        { name: 'Our Socials', href: '#socials' },
+        { name: 'Our Socials', href: '/socials' },
+        { name: 'Contact', href: '/contact' }
     ];
 
     return (

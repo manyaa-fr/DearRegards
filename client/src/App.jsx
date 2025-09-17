@@ -5,6 +5,10 @@ import LandingPage from './components/LandingPage';
 import Auth from './components/Auth';
 import ConversionTool from './components/ConversionTool';
 import Dashboard from './components/Dashboard';
+import Features from "./components/Features";
+import AboutUs from "./components/AboutUs";
+import Socials from "./components/Socials";
+import ContactUs from "./components/Contact";
 
 function App() {
   const { user, logout } = useContext(AuthContext);
@@ -13,6 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/socials" element={<Socials />} />
+          <Route path="/contact" element={<ContactUs />} />
           {user ? (
             <>
               <Route path="/app" element={<ConversionTool />} />
