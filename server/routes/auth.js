@@ -61,7 +61,7 @@ router.post('/register', validatePassword, async (req, res) => {
     res.status(201).json({ message: 'User registered. Please check your email for a verification OTP.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server Error during registration.' });
+    res.status(500).json({ error: 'Server Error during registration.', message: error.message });
   }
 });
 
