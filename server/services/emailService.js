@@ -1,11 +1,13 @@
 const nodemailer = require('nodemailer');
 
-// Create a Nodemailer transporter using your configured email service
+// Create a Nodemailer transporter for SendGrid
 const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE,
+  host: process.env.SMTP_HOST || 'smtp.sendgrid.net',
+  port: parseInt(process.env.SMTP_PORT, 10) || 587,
+  secure: false, // use TLS
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.SMTP_USER || 'apikey', // literally 'apikey'
+    pass: process.env.SMTP_PASS, // your SendGrid API key
   },
 });
 
@@ -16,7 +18,7 @@ const transporter = nodemailer.createTransport({
  */
 const sendVerificationEmail = async (toEmail, otp) => {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: process.env.EMAIL_USER || 'youremail@example.com', // verified sender email in SendGrid
     to: toEmail,
     subject: 'DearRegards: Verify Your Email Address',
     html: `
