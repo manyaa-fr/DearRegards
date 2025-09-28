@@ -1,19 +1,25 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-// Initialize Resend client once
-const resend = new Resend(process.env.API_KEY);
+// Create transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // your Gmail
+    pass: process.env.EMAIL_PASS, // app password from Google
+  },
+});
 
 /**
  * Sends a verification email with OTP
  * @param {string} toEmail - recipient email
  * @param {string} otp - OTP to send
  */
+
 const sendVerificationEmail = async (toEmail, otp) => {
-  try {
-    await resend.emails.send({
-      from: process.env.EMAIL_USER, 
-      to: toEmail,
-      subject: 'Verify Your Email Address',
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: toEmail,
+    subject: 'DearRegards: Verify Your Email Address',
       html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <h2 style="color: #2c3e50;">Email Verification</h2>
@@ -24,7 +30,10 @@ const sendVerificationEmail = async (toEmail, otp) => {
         <p>Best regards,<br/>The DearRegards Team</p>
       </div>
     `,
-    });
+    }
+
+  try {
+    await transporter.sendMail(mailOptions);
     console.log(`Verification email sent to ${toEmail}`);
   } catch (error) {
     console.error(`Error sending email to ${toEmail}:`, error);
