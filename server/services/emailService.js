@@ -1,27 +1,20 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-// Create a Nodemailer transporter for SendGrid
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.sendgrid.net',
-  port: parseInt(process.env.SMTP_PORT, 10) || 587,
-  secure: false, // use TLS
-  auth: {
-    user: process.env.SMTP_USER || 'apikey', // literally 'apikey'
-    pass: process.env.SMTP_PASS, // your SendGrid API key
-  },
-});
+// Initialize Resend client once
+const resend = new Resend(process.env.API_KEY);
 
 /**
- * Sends an email with a one-time password (OTP).
- * @param {string} toEmail - The recipient's email address.
- * @param {string} otp - The one-time password to send.
+ * Sends a verification email with OTP
+ * @param {string} toEmail - recipient email
+ * @param {string} otp - OTP to send
  */
 const sendVerificationEmail = async (toEmail, otp) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER || 'youremail@example.com', // verified sender email in SendGrid
-    to: toEmail,
-    subject: 'DearRegards: Verify Your Email Address',
-    html: `
+  try {
+    await resend.emails.send({
+      from: process.env.EMAIL_USER, 
+      to: toEmail,
+      subject: 'Verify Your Email Address',
+      html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <h2 style="color: #2c3e50;">Email Verification</h2>
         <p>Thank you for registering with DearRegards. To complete your registration, please use the following one-time password (OTP):</p>
@@ -31,10 +24,7 @@ const sendVerificationEmail = async (toEmail, otp) => {
         <p>Best regards,<br/>The DearRegards Team</p>
       </div>
     `,
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
+    });
     console.log(`Verification email sent to ${toEmail}`);
   } catch (error) {
     console.error(`Error sending email to ${toEmail}:`, error);
