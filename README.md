@@ -1,4 +1,5 @@
-DearRegards ✉️
+# DearRegards ✉️
+
 AI-Powered Professional Email Tone Converter — From Rage to Respect
 
 1. Overview
