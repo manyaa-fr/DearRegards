@@ -246,25 +246,24 @@ router.post('/login', validatePassword, async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
-    // Check if user is verified
-    if (!user.isVerified) {
-      return res.status(401).json({ error: 'Please verify your email before logging in. Check your inbox for the verification code.' });
-    }
-
     // Verify password
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
-    // Generate JWT token
+    // Generate JWT token (allow login even if unverified)
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
 
     res.status(200).json({
       message: 'Login successful.',
       token,
-      user: { id: user.id, email: user.email }
+      user: { 
+        id: user.id, 
+        email: user.email,
+        isVerified: user.isVerified // Send verification status to frontend
+      }
     });
   } catch (error) {
     console.error('Login error:', error);

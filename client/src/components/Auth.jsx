@@ -33,7 +33,6 @@ const Auth = () => {
       timerRef.current = setTimeout(() => setOtpTimer((prev) => prev - 1), 1000);
     }
 
-
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -53,20 +52,19 @@ const Auth = () => {
   }, []);
 
   const resetFormAndState = () => {
-  setFormData({ email: '', password: '', ageVerified: false, otp: '' });
-  setMessage(null);
-  setError(null);
-  setIsLoading(false);
-  setOtpTimer(0);
-  if (timerRef.current) {
-    clearTimeout(timerRef.current);
-    timerRef.current = null;
-  }
-};
+    setFormData({ email: '', password: '', ageVerified: false, otp: '' });
+    setMessage(null);
+    setError(null);
+    setIsLoading(false);
+    setOtpTimer(0);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
 
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-
 
     // keep OTP numeric only, max 6 digits
     if (e.target.name === 'otp') {
@@ -75,10 +73,8 @@ const Auth = () => {
       return;
     }
 
-
     setFormData({ ...formData, [e.target.name]: value });
   };
-
 
   const formatTimer = (secs) => {
     const m = Math.floor(secs / 60);
@@ -94,17 +90,19 @@ const Auth = () => {
 
     try {
       if (isLogin) {
+        // LOGIN FLOW
         const response = await axios.post(`${BACKEND_URL}/auth/login`, {
           email: formData.email,
           password: formData.password
         });
         login(response.data.token, response.data.user);
         if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
         }
         navigate('/app');
       } else {
+        // REGISTRATION FLOW
         if (!formData.ageVerified) {
           setError('You must be 18 or older to register.');
           setIsLoading(false);
@@ -120,18 +118,14 @@ const Auth = () => {
         setOtpTimer(OTP_TIMER_SECONDS);
       }
     } catch (err) {
-      if (err.response?.status === 401 && isLogin) {
-        // backend asking user to verify email
-        setRequiresVerification(true);
-        setMessage(err.response.data?.error || 'Please verify your email.');
-        setOtpTimer(OTP_TIMER_SECONDS);
-      } else {
-        setError(err.response?.data?.error || 'An unexpected error occurred.');
-      }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      console.error('Auth error:', err);
+      
+      // Display error message from backend
+      setError(err.response?.data?.error || err.response?.data?.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
@@ -153,35 +147,42 @@ const Auth = () => {
       login(response.data.token, response.data.user);
       navigate('/app');
     } catch (err) {
+      console.error('OTP verification error:', err);
       setError(err.response?.data?.error || 'Verification failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
-    };
+  };
 
-    const handleResendOtp = async () => {
-      setMessage(null);
-      setError(null);
-      setIsLoading(true);
+  const handleResendOtp = async () => {
+    setMessage(null);
+    setError(null);
+    setIsLoading(true);
 
-      try {
-        await axios.post(`${BACKEND_URL}/auth/resend-otp`, {
+    try {
+      await axios.post(`${BACKEND_URL}/auth/resend-otp`, {
         email: formData.email
-        });
-        setMessage('OTP is arriving in your email.');
-        setOtpTimer(OTP_TIMER_SECONDS);
-      } catch (err) {
-        setError(err.response?.data?.error || 'Failed to resend OTP.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      });
+      setMessage('OTP is arriving in your email.');
+      setOtpTimer(OTP_TIMER_SECONDS);
+    } catch (err) {
+      console.error('Resend OTP error:', err);
+      setError(err.response?.data?.error || 'Failed to resend OTP.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="auth-container">
       <div className="auth-content">
         <button 
-          className="auth-back-button" onClick={() => {resetFormAndState(); navigate('/')}}>
+          className="auth-back-button" 
+          onClick={() => {
+            resetFormAndState(); 
+            navigate('/');
+          }}
+        >
           <ArrowLeft size={16} />
           Back to Home
         </button>
@@ -297,7 +298,7 @@ const Auth = () => {
                   <p className="auth-otp-info">Code sent to {formData.email}</p>
                   {otpTimer > 0 ? (
                     <p className="auth-otp-timer" aria-live="polite">
-                    OTP is arriving... Please wait {formatTimer(otpTimer)} to resend.
+                      OTP is arriving... Please wait {formatTimer(otpTimer)} to resend.
                     </p>
                   ) : (
                     <p className="auth-otp-timer">Didn't receive it? You can resend the OTP.</p>
@@ -313,10 +314,10 @@ const Auth = () => {
                     setRequiresVerification(false);
                     setOtpTimer(0);
                     if (timerRef.current) {
-                    clearTimeout(timerRef.current);
-                    timerRef.current = null;
-                  }
-                }}
+                      clearTimeout(timerRef.current);
+                      timerRef.current = null;
+                    }
+                  }}
                 >
                   Back to Login
                 </button>
@@ -347,8 +348,8 @@ const Auth = () => {
                   setFormData({ email: '', password: '', ageVerified: false, otp: '' });
                   setOtpTimer(0);
                   if (timerRef.current) {
-                  clearTimeout(timerRef.current);
-                  timerRef.current = null;
+                    clearTimeout(timerRef.current);
+                    timerRef.current = null;
                   }
                 }}
               >
