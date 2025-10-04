@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Auth.css';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://dearregards.onrender.com/api';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/api/auth';
 const OTP_TIMER_SECONDS = 90;
 
 const Auth = () => {

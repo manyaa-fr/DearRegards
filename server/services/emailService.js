@@ -1,19 +1,31 @@
 const nodemailer = require('nodemailer');
 
-// Create transporter
+// Create transporter with explicit Gmail settings
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // Use SSL
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 });
 
-/**
- * Sends a verification email with OTP
- * @param {string} toEmail - recipient email
- * @param {string} otp - OTP to send
- */
+// Verify transporter on startup
+transporter.verify(function(error, success) {
+  if (error) {
+    console.error('❌ Email transporter verification failed:', error);
+  } else {
+    console.log('✅ Email server is ready to send messages');
+  }
+});
+
 const sendVerificationEmail = async (toEmail, otp) => {
   console.log('=== EMAIL SERVICE: Starting to send email ===');
   console.log('To:', toEmail);
@@ -21,7 +33,7 @@ const sendVerificationEmail = async (toEmail, otp) => {
   console.log('From email:', process.env.EMAIL_USER);
   
   const mailOptions = {
-    from: `DearRegards <${process.env.EMAIL_USER}>`,
+    from: `"DearRegards" <${process.env.EMAIL_USER}>`,
     to: toEmail,
     subject: 'DearRegards: Verify Your Email Address',
     html: `
@@ -39,9 +51,10 @@ const sendVerificationEmail = async (toEmail, otp) => {
   try {
     console.log('Attempting to send email...');
     const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent successfully to ${toEmail}`);
+    console.log('✅ Email sent successfully to', toEmail);
     console.log('Message ID:', info.messageId);
-    console.log('=== EMAIL SERVICE: Email sent successfully ===');
+    console.log('Response:', info.response);
+    return info;
   } catch (error) {
     console.error('=== EMAIL SERVICE ERROR ===');
     console.error('Error name:', error.name);

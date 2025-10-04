@@ -92,9 +92,12 @@ router.post('/register', validatePassword, async (req, res) => {
       email: email
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    console.error('Error stack:', error.stack);
+    console.error('\n=== REGISTRATION ERROR ===');
+    console.error('Error name:', error.name);
     console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    console.error('Full error:', JSON.stringify(error, null, 2));
+    console.error('=== END REGISTRATION ERROR ===\n');
     
     // Check if it's an email sending error
     if (error.message === 'Could not send verification email.') {
