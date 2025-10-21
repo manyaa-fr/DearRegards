@@ -1,12 +1,8 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/Features.css';
-import { AuthContext } from '../context/AuthContext';
-import { useContext } from 'react';
 
 const Features = () => {
-
-    const { isLoggedIn } = useContext(AuthContext);
 
   const features = [
     {
@@ -95,10 +91,7 @@ const Features = () => {
               <div className="benefits-cta">
                 <h3 className="cta-title">Ready to Transform Your Emails?</h3>
                 <p className="cta-text">Start writing with confidence today</p>
-                {isLoggedIn ? 
-                <button className="btn-hero" onClick={() => window.location.href = '/app'}>Try It Now</button> 
-                :
-                 <button className="btn-hero" onClick={() => window.location.href = '/auth'} >Try It Now</button> }
+                <button className="btn-hero" onClick={() => window.location.href = '/app'}>Try It Now</button>
               </div>
             </div>
           </div>

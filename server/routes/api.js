@@ -2,8 +2,6 @@
 
 const express = require('express');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const auth = require('../middleware/auth');
-const User = require('../models/User');
 
 const router = express.Router();
 
@@ -15,9 +13,9 @@ if (!process.env.GEMINI_API_KEY) {
 /**
  * @route POST /api/convert-email
  * @desc Converts an email with user-specified tone and word limit.
- * @access Private
+ * @access Public
  */
-router.post('/convert-email', auth, async (req, res) => {
+router.post('/convert-email', async (req, res) => {
   const { angryEmail, tone, wordLimit } = req.body;
 
   if (!angryEmail || !tone || !wordLimit) {
@@ -64,24 +62,10 @@ router.post('/convert-email', auth, async (req, res) => {
       toneChange: parsedResponse.toneChange
     };
 
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found.' });
-    }
-
-    user.conversions.push({
-      angryEmail,
-      // Save the subject and body separately in the database
-      convertedSubject: parsedResponse.convertedSubject,
-      convertedEmail: parsedResponse.convertedBody,
-      toneChange: parsedResponse.toneChange,
-    });
-    await user.save();
-
     // Send the combined response to the frontend
     res.status(200).json(combinedResponse);
   } catch (error) {
-    console.error('Gemini API Error or Database Error:', error.message);
+    console.error('Gemini API Error:', error.message);
     res.status(500).json({
       error: 'Internal Server Error: Could not process the email conversion.',
       details: error.message,
@@ -91,18 +75,15 @@ router.post('/convert-email', auth, async (req, res) => {
 
 /**
  * @route GET /api/conversions
- * @desc Get a user's conversion history.
- * @access Private
+ * @desc Get conversion history (now returns empty array since no user system)
+ * @access Public
  */
-router.get('/conversions', auth, async (req, res) => {
+router.get('/conversions', async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('conversions');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found.' });
-    }
-    res.status(200).json(user.conversions.sort((a, b) => b.date - a.date));
+    // Return empty array since we removed user authentication
+    res.status(200).json([]);
   } catch (error) {
-    console.error('Database Error:', error.message);
+    console.error('Error:', error.message);
     res.status(500).json({ error: 'Server Error: Could not retrieve conversion history.' });
   }
 });

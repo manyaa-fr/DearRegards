@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { api } from '../config';
 import { Mic, Mail, Home, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ConversionTool.css';
@@ -26,7 +27,7 @@ function ConversionTool() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/convert-email`, {
+      const response = await axios.post(api('/api/convert-email'), {
         angryEmail,
         tone,
         wordLimit

@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
 
 // Connect to the database first; fail fast if the connection fails
@@ -15,7 +14,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000', 
   'http://localhost:5174',
-  'https://dear-regards.vercel.app'
+  'https://dear-regards.vercel.app',
+  'https://dearregards.vercel.app'
 ];
 
 const corsOptions = {
@@ -49,8 +49,6 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'DearRegards API is running.' });
 });
 
-// API Routes
-app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
 // Error handling middleware

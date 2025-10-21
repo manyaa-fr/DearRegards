@@ -1,0 +1,27 @@
+services:
+  server:
+    build: ./server
+    container_name: dearregards-server
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb+srv://mayavi1319:DearManya@cluster0.vypmlg3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    container_name: dearregards-client
+    ports:
+      - "3000:80"
+
+  mongo:
+    image: mongo:6
+    container_name: dearregards-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

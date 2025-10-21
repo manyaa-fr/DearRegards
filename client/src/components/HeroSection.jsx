@@ -1,11 +1,7 @@
 import { Sparkles, Shield, Zap, Users } from 'lucide-react';
 import '../styles/heroSection.css';
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 
 const HeroSection = () => {
-
-    const { isLoggedIn } = useContext(AuthContext);
 
   const features = [
     { icon: Sparkles, text: "AI-Powered Tone Enhancement" },
@@ -45,7 +41,7 @@ const HeroSection = () => {
           <button
           className="btn-hero cta-primary"
           onClick={() => {
-            window.location.href = isLoggedIn ? '/app' : '/auth';
+            window.location.href = '/app';
           }}
         >
           Try It Now

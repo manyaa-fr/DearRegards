@@ -1,11 +1,9 @@
-import { useState, useContext } from 'react';
-import { Menu, X, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import '../styles/header.css';
-import { AuthContext } from '../context/AuthContext';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { isLoggedIn, logout } = useContext(AuthContext);
 
     const navigationLinks = [
         { name: 'Home', href: '/' },
@@ -42,38 +40,18 @@ const Header = () => {
 
                     {/* CTA Buttons */}
                     <div className="cta-buttons">
-                        {!isLoggedIn ? (
-                            <>
-                                <button
-                                    className="btn-primary"
-                                    onClick={() => window.location.href = '/auth'}
-                                >
-                                    Sign Up
-                                </button>
-                                <button
-                                    className="btn-hero"
-                                    onClick={() => window.location.href = '/auth'}
-                                >
-                                    Login
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <button
-                                    className="btn-primary"
-                                    onClick={() => window.location.href = '/dashboard'}
-                                >
-                                    Dashboard
-                                </button>
-                                <button
-                                    className="btn-ghost"
-                                    onClick={logout}
-                                    title="Logout"
-                                >
-                                    <LogOut size={16} />
-                                </button>
-                            </>
-                        )}
+                        <button
+                            className="btn-primary"
+                            onClick={() => window.location.href = '/app'}
+                        >
+                            Convert Email
+                        </button>
+                        <button
+                            className="btn-hero"
+                            onClick={() => window.location.href = '/dashboard'}
+                        >
+                            Dashboard
+                        </button>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -101,50 +79,24 @@ const Header = () => {
                                 </a>
                             ))}
                             <div className="mobile-cta-buttons">
-                                {!isLoggedIn ? (
-                                    <>
-                                        <button 
-                                            className="btn-primary"
-                                            onClick={() => {
-                                                setIsMenuOpen(false);
-                                                window.location.href = '/auth';
-                                            }}
-                                        >
-                                            Sign Up
-                                        </button>
-                                        <button 
-                                            className="btn-hero"
-                                            onClick={() => {
-                                                setIsMenuOpen(false);
-                                                window.location.href = '/auth';
-                                            }}
-                                        >
-                                            Login
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <button
-                                            className="btn-primary"
-                                            onClick={() => {
-                                                setIsMenuOpen(false);
-                                                window.location.href = '/dashboard';
-                                            }}
-                                        >
-                                            Dashboard
-                                        </button>
-                                        <button
-                                            className="btn-ghost"
-                                            onClick={() => {
-                                                setIsMenuOpen(false);
-                                                logout();
-                                            }}
-                                        >
-                                            <LogOut size={16} />
-                                            Logout
-                                        </button>
-                                    </>
-                                )}
+                                <button 
+                                    className="btn-primary"
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        window.location.href = '/app';
+                                    }}
+                                >
+                                    Convert Email
+                                </button>
+                                <button 
+                                    className="btn-hero"
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        window.location.href = '/dashboard';
+                                    }}
+                                >
+                                    Dashboard
+                                </button>
                             </div>
                         </nav>
                     </div>

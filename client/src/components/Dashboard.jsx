@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { api } from '../config';
 import { ArrowLeft, Clock, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/dashboard.css';
@@ -15,7 +16,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchConversions = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/conversions`);
+        const response = await axios.get(api('/api/conversions'));
         // Ensure we always set an array
         const data = response.data;
         if (Array.isArray(data)) {
@@ -107,7 +108,7 @@ function Dashboard() {
           </p>
           <button 
             className="btn-hero"
-            onClick={() => navigate('/auth')}
+            onClick={() => navigate('/app')}
           >
             Start Converting
           </button>
