@@ -6,8 +6,7 @@ const HeroSection = () => {
   const features = [
     { icon: Sparkles, text: "AI-Powered Tone Enhancement" },
     { icon: Shield, text: "Professional Language Transformation" },
-    { icon: Zap, text: "Instant Email Improvement" },
-    { icon: Users, text: "Trusted by Professionals" },
+    { icon: Zap, text: "Instant Email Improvement" }
   ];
 
   return (
@@ -46,18 +45,8 @@ const HeroSection = () => {
         >
           Try It Now
         </button>
-          <button 
-            className="btn-ghost cta-secondary"
-            onClick={() => window.location.href = '/about'}
-          >
-            About us
-          </button>
+          
         </div>
-
-        {/* Social Proof */}
-        <p className="social-proof">
-          Trusted by professionals at Fortune 500 companies and growing startups alike
-        </p>
       </div>
 
       {/* Decorative floating elements */}

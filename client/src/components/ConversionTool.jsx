@@ -101,13 +101,7 @@ function ConversionTool() {
             <Home size={16} />
             Back to Home
           </button>
-          <button
-            className="nav-button dashboard-button"
-            onClick={() => navigate('/dashboard')}
-          >
-            <BarChart3 size={16} />
-            Dashboard
-          </button>
+          
         </div>
       </div>
 

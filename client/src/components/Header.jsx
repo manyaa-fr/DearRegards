@@ -5,14 +5,6 @@ import '../styles/header.css';
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const navigationLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'Features', href: '/features' },
-        { name: 'About Us', href: '/about-us' },
-        { name: 'Our Socials', href: '/socials' },
-        { name: 'Contact', href: '/contact' }
-    ];
-
     return (
         <header className="header">
             <div className="header-container">
@@ -25,19 +17,6 @@ const Header = () => {
                         <span className="logo-text gradient-text">Dear Regards</span>
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <nav className="desktop-nav">
-                        {navigationLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.href}
-                                className="nav-link"
-                            >
-                                {link.name}
-                            </a>
-                        ))}
-                    </nav>
-
                     {/* CTA Buttons */}
                     <div className="cta-buttons">
                         <button
@@ -45,12 +24,6 @@ const Header = () => {
                             onClick={() => window.location.href = '/app'}
                         >
                             Convert Email
-                        </button>
-                        <button
-                            className="btn-hero"
-                            onClick={() => window.location.href = '/dashboard'}
-                        >
-                            Dashboard
                         </button>
                     </div>
 
@@ -87,15 +60,6 @@ const Header = () => {
                                     }}
                                 >
                                     Convert Email
-                                </button>
-                                <button 
-                                    className="btn-hero"
-                                    onClick={() => {
-                                        setIsMenuOpen(false);
-                                        window.location.href = '/dashboard';
-                                    }}
-                                >
-                                    Dashboard
                                 </button>
                             </div>
                         </nav>
